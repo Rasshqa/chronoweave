@@ -1,0 +1,135 @@
+'use client';
+
+// ponytail: Community gallery showcasing minted data sculptures with direct load into studio.
+
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ArrowLeft, Heart, Sparkles, Thermometer, Wind, Droplets, Box, Compass } from 'lucide-react';
+import { MockArtwork } from '@/lib/db';
+
+export default function GalleryPage() {
+  const [artworks, setArtworks] = useState<MockArtwork[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadGallery() {
+      try {
+        const res = await fetch('/api/gallery');
+        if (res.ok) {
+          const data = await res.json();
+          setArtworks(data.artworks || []);
+        }
+      } catch {
+        // Fallback
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadGallery();
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#070709] text-[#F4F4F6] flex flex-col">
+      {/* Top Bar */}
+      <header className="h-14 border-b border-[#22242C] bg-[#111216] px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-xs font-mono-numbers text-[#94A3B8] hover:text-[#FF5500] transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          BACK TO STUDIO
+        </Link>
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-[#00F0FF] animate-pulse" />
+          <span className="text-xs font-mono-numbers uppercase tracking-widest text-[#00F0FF] font-semibold">
+            COMMUNITY ARCHIVE
+          </span>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8">
+        <div className="mb-8 border-b border-[#22242C] pb-6">
+          <div className="flex items-center gap-2 text-xs font-mono-numbers text-[#FF5500] uppercase mb-1">
+            <Sparkles className="w-3.5 h-3.5" />
+            MINTED DATA SCULPTURES
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold uppercase tracking-tight text-[#F4F4F6]">
+            Public Memorabilia Gallery
+          </h1>
+          <p className="text-xs sm:text-sm text-[#94A3B8] mt-1 max-w-2xl">
+            Explore deterministic 3D sculptures and particle flows generated from historical weather records across the globe.
+          </p>
+        </div>
+
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20 text-[#94A3B8]">
+            <div className="w-8 h-8 border-2 border-[#00F0FF] border-t-transparent rounded-full animate-spin mb-3" />
+            <span className="text-xs font-mono-numbers uppercase">LOADING ARCHIVE RECORDS...</span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {artworks.map((art) => (
+              <div
+                key={art.seedHash}
+                className="bg-[#111216] border border-[#22242C] hover:border-[#FF5500]/50 rounded-xl p-5 flex flex-col justify-between transition-all group hover:shadow-xl hover:shadow-[#FF5500]/5"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-mono-numbers font-bold text-[#FF5500] bg-[#FF5500]/10 px-2 py-0.5 rounded border border-[#FF5500]/20">
+                      #{art.seedHash}
+                    </span>
+                    <span className="text-[11px] font-mono-numbers text-[#94A3B8] flex items-center gap-1">
+                      <Box className="w-3 h-3 text-[#00F0FF]" />
+                      {art.renderMode.toUpperCase()}
+                    </span>
+                  </div>
+
+                  <h2 className="text-lg font-bold text-[#F4F4F6] group-hover:text-[#FF5500] transition-colors uppercase leading-snug">
+                    {art.title}
+                  </h2>
+                  <p className="text-xs text-[#94A3B8] mt-0.5 mb-4">
+                    {art.cityName}, {art.country} // {art.targetDate}
+                  </p>
+
+                  <div className="grid grid-cols-3 gap-2 bg-[#070709] p-2.5 rounded-lg border border-[#22242C] text-xs font-mono-numbers mb-4">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] text-[#64748B] flex items-center gap-1">
+                        <Thermometer className="w-3 h-3 text-[#FF5500]" /> TEMP
+                      </span>
+                      <span className="font-bold text-[#F4F4F6] mt-0.5">{art.tempMax}°C</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[10px] text-[#64748B] flex items-center gap-1">
+                        <Wind className="w-3 h-3 text-[#00F0FF]" /> WIND
+                      </span>
+                      <span className="font-bold text-[#F4F4F6] mt-0.5">{art.windSpeed}k</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[10px] text-[#64748B] flex items-center gap-1">
+                        <Droplets className="w-3 h-3 text-[#3B82F6]" /> RAIN
+                      </span>
+                      <span className="font-bold text-[#F4F4F6] mt-0.5">{art.precipitation}m</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-3 border-t border-[#22242C]">
+                  <span className="text-[11px] text-[#64748B] font-mono-numbers">
+                    BY {art.creatorName.toUpperCase()}
+                  </span>
+                  <Link
+                    href={`/artifact/${art.seedHash}`}
+                    className="text-xs font-bold font-mono-numbers text-[#00F0FF] hover:underline"
+                  >
+                    INSPECT ARTIFACT →
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}

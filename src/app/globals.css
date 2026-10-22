@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #070709;
+  --color-foreground: #F4F4F6;
+  --color-surface: #111216;
+  --color-surface-border: #22242C;
+  --color-surface-hover: #181A20;
+  --color-accent-orange: #FF5500;
+  --color-accent-gold: #FFB800;
+  --color-accent-cyan: #00F0FF;
+  --color-accent-crimson: #FF0055;
+  --color-muted: #A1A1AA;
+  --color-nominal: #10B981;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #22242C #070709;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Space Grotesk", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.font-mono-numbers {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* WCAG AA focus rings */
+*:focus-visible {
+  outline: 2px solid var(--color-accent-cyan);
+  outline-offset: 2px;
+}
