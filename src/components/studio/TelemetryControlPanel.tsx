@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import { TelemetryData } from '@/lib/mappingEngine';
 import { PRESETS } from '@/lib/presets';
-import { Search, Calendar, Sliders, Sparkles, RefreshCw, Box, Wind, Thermometer, Droplets } from 'lucide-react';
+import { Search, Calendar, Sliders, Sparkles, RefreshCw, Box, Wind, Thermometer, Droplets, Shuffle } from 'lucide-react';
 
 interface TelemetryControlPanelProps {
   telemetry: TelemetryData;
@@ -29,6 +29,14 @@ export default function TelemetryControlPanel({
   const [cityInput, setCityInput] = useState(telemetry.cityName);
   const [dateInput, setDateInput] = useState(telemetry.date);
   const [showSliders, setShowSliders] = useState(false);
+
+  const handleRandomPreset = () => {
+    const randomIndex = Math.floor(Math.random() * PRESETS.length);
+    const chosen = PRESETS[randomIndex];
+    setCityInput(chosen.telemetry.cityName);
+    setDateInput(chosen.telemetry.date);
+    onApplyPreset(chosen.id);
+  };
 
   const handleSubmitSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,9 +142,21 @@ export default function TelemetryControlPanel({
 
       {/* 1-Click Presets */}
       <div className="flex flex-col gap-2">
-        <label className="text-xs font-mono-numbers font-semibold text-[#94A3B8] uppercase">
-          HISTORICAL PRESETS (0-CLICK)
-        </label>
+        <div className="flex items-center justify-between">
+          <label className="text-xs font-mono-numbers font-semibold text-[#94A3B8] uppercase">
+            HISTORICAL PRESETS (0-CLICK)
+          </label>
+          <button
+            type="button"
+            onClick={handleRandomPreset}
+            className="inline-flex items-center gap-1 text-[11px] font-mono-numbers text-[#00F0FF] hover:text-[#FF5500] transition-colors cursor-pointer py-1 px-1.5 rounded hover:bg-[#181A20]"
+            title="Randomize Historical Event"
+            aria-label="Randomize Historical Event"
+          >
+            <Shuffle className="w-3 h-3" />
+            <span>SHUFFLE</span>
+          </button>
+        </div>
         <div className="flex flex-col gap-1.5">
           {PRESETS.map((preset) => (
             <button
