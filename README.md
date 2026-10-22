@@ -18,6 +18,16 @@ Users can generate, orbit, customize, and export high-resolution 4K museum exhib
 
 ---
 
+## Key Interactive Features
+
+- **Dual Generative Modes:** Toggle between 3D GLSL displacement shader mesh and 2D Simplex noise particle flow-field with real-time parameter synchronization.
+- **Floating Thermal Palette Inspector:** HUD spectrum overlay displaying the 3 interpolated thermal colors (`primaryColor`, `secondaryColor`, `accentColor`) with 1-click hex code copy and tooltip feedback.
+- **Serendipitous Event Shuffling:** 1-click "Shuffle" button to instantaneously load memorable historical climate events (e.g., Tokyo Heatwave, Reykjavik Polar Vortex, Sahara Sirocco, Kyoto Blossom Day).
+- **Interactive Community Gallery with Multi-Category Filtering:** Filter curated artifacts by category (`3D Sculptures`, `2D Flow-Fields`, `Glacial <10°C`, `Temperate 10-25°C`, `Tropical >25°C`) or live keyword search with empty-state resilience.
+- **4K High-DPI Poster & 9:16 Wallpaper Compositor:** Export 4K exhibition prints (`2400 x 3000 px`) and 9:16 vertical wallpapers (`2160 x 3840 px`) rendered offscreen with typographic spec sheets.
+
+---
+
 ## Mathematical Mapping Formulas (TRD Implementation)
 
 Given real-world telemetry parameters:
